@@ -33,14 +33,16 @@ def kMeansAlg():
     #clusterVars = []
     k = int(input("What is the value of K?"))
     r = int(input("How many times would you like to run?"))
-    kCluster = kMeans(k)
-    mean = np.mean(data, axis = 0)
-    std = np.std(data, axis = 0)
-    centers = np.random.rand(k,fNum)*std + mean
+    kCluster = kMeans(k, dataNum, fNum,data)
+    rseed =2
+    rng =np.random.RandomState(rseed)
+    i = rng.permutation(data.shape[0])[:k]
+    centers = data[i]
+    kCluster.assign(centers,data)
 
-     for i in range(k):
-        distances[:,i] = kCluster.euclideanDistance(data, centers[i])
-        print("Distances: ", distances)
+
+
+
 
 
     # initial_clusters = np.zeros(centers.shape)
@@ -49,23 +51,9 @@ def kMeansAlg():
     # clusters = np.zeros(dataNum)
     # distances = np.zeros((dataNum, k))
     # e = kCluster.euclideanDistance(updatedClusters, initial_clusters)
-    # print("Value of error:", e)
-    #centroids = [data[i+2] for i in range(k)]
-    #clusters = kCluster.assign(centroids,data)
-    #initial_clusters = clusters
 
-    # while (e !=0).all() :
-    #     for i in range(k):
-    #         distances[:,i] = kCluster.euclideanDistance(data[i], updatedClusters[i])
-    #     clusters = np.argmin(distances, axis =1)
-    #
-    #     initial_clusters = updatedClusters
 
-    #     for i in range(k):
-    #         updatedClusters[i] = np.mean(data[clusters ==i], axis =0)
-    #     e = kCluster.euclideanDistance(updatedClusters, initial_clusters)
-    # print("These are the updated clusters:", updatedClusters)
-    #
+
     # colors = ['green','red', 'purple']
     # for i in range(dataNum):
     #     plt.scatter(data[i,0], data[i,1], s= 7, color = colors[int(i)])
@@ -77,22 +65,26 @@ def fuzzyCMeansAlg():
     print("hi")
 
 class kMeans:
-    def __init__(self,k):
+    def __init__(self,k, dataNum, fNum, data):
         self.k = k
+        self.numData = dataNum
+        self.features = fNum
+        self.data = data
 
-    def euclideanDistance(self,centroid, c):
-        return (sum((centroid - c)**2))**0.5
 
-    def assign(self, centroids, c_array):
-        print("Assigning stuff")
+    def euclideanDistance(self,center, data):
+        return (sum((center - data)**2))**0.5
+
+    def assign(self, centers, data):
         clusters = []
-        for i in range(c_array.shape[0]):
+        for d in range(dataNum):
             distances = []
-            for centroid in centroids:
-                distances.append(self.euclideanDistance(centroid,c_array[i]))
-            cluster = [z for z, val in enumerate(distances) if val== min(distances)]
+            for c in centers:
+                distances.append(self.euclideanDistance(c, data[d]))
+
+            cluster = [z for z, val in enumerate(distances) if val == min(distances)]
             clusters.append(cluster[0])
-        return clusters
+        print(clusters)
 
     def calcCentroids(self, clusters, c_array):
         #newCentroids = np.array([c_array[]])
