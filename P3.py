@@ -44,16 +44,16 @@ def kMeansAlg():
     for z in range(n):
         kCluster.clusters = {}
         kCluster.assign(data)
-        #kCluster.calcCenters()
-        break
-        # if np.all(self.centers == self.prev_centers):
-        #     break
+        kCluster.calcCenters()
+
+        if np.all(kCluster.centers == kCluster.prev_centers):
+            break
 
         #calculated squared sums and push into array
         #ss = kCluster.squareSums(data, centers)
         # centers = new_centers
 
-        #Track numbers of least squares error variance????
+
 
 
     # colors = ['green','red', 'purple']
@@ -90,21 +90,11 @@ class kMeans:
         self.prev_centers = dict(self.centers)
 
 
-    def calcCenters(self, clusters):
+    def calcCenters(self):
         for c in self.clusters:
             self.centers[c] = np.average(self.clusters[c], axis =0)
 
 
-        # count = np.zeros(self.k)
-        #
-        # for i in range(self.k):
-        #     z = 0
-        #     for c in clusters:
-        #         if c == i:
-        #             z +=1
-        #     count[i] == z
-        #
-        # print("Count", count)
 
 
     def squareSums(self, data, centers):
