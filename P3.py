@@ -31,27 +31,29 @@ def dataLoad():
 
 def kMeansAlg():
     #clusterVars = []
-    k = int(input("What is the value of K?"))
-    r = int(input("How many times would you like to run?"))
-    kCluster = kMeans(k, dataNum, fNum,data)
+    k = int(input("What is the value of K?")) #Takes user input of k
+    kCluster = kMeans(k, dataNum, fNum,data) #Creates kCluster object
+
     rseed =2
     rng =np.random.RandomState(rseed)
-    i = rng.permutation(data.shape[0])[:k]
-    centers = data[i]
-    kCluster.assign(centers,data)
+    i = rng.permutation(data.shape[0])[:k] # Creates random indexes to assign centers
+    kCluster.centers = data[i] #Creates centers at those random data points
+    n = int(input("How many iterations?: ")) #Asks user for how many iterations
+    squaredSums = np.zeros(n)
+    #z = 0
+    for z in range(n):
+        kCluster.clusters = {}
+        kCluster.assign(data)
+        #kCluster.calcCenters()
+        break
+        # if np.all(self.centers == self.prev_centers):
+        #     break
 
+        #calculated squared sums and push into array
+        #ss = kCluster.squareSums(data, centers)
+        # centers = new_centers
 
-
-
-
-
-    # initial_clusters = np.zeros(centers.shape)
-    # updatedClusters = centers
-    #
-    # clusters = np.zeros(dataNum)
-    # distances = np.zeros((dataNum, k))
-    # e = kCluster.euclideanDistance(updatedClusters, initial_clusters)
-
+        #Track numbers of least squares error variance????
 
 
     # colors = ['green','red', 'purple']
@@ -75,20 +77,38 @@ class kMeans:
     def euclideanDistance(self,center, data):
         return (sum((center - data)**2))**0.5
 
-    def assign(self, centers, data):
-        clusters = []
-        for d in range(dataNum):
-            distances = []
-            for c in centers:
-                distances.append(self.euclideanDistance(c, data[d]))
+    def assign(self, data):
 
-            cluster = [z for z, val in enumerate(distances) if val == min(distances)]
-            clusters.append(cluster[0])
-        print(clusters)
+        for i in range(self.k): #Arranges for K different clusters
+            self.clusters[i] = []
 
-    def calcCentroids(self, clusters, c_array):
-        #newCentroids = np.array([c_array[]])
-        print("sup")
+        for f in data:
+            distances = [self.euclideanDistance(f,self.centers[c]) for c in range(self.k)] #calculates distances in data
+            cluster = distances.index(min(distances))
+            self.clusters[cluster] =np.append(self.clusters[cluster], f)
+
+        self.prev_centers = dict(self.centers)
+
+
+    def calcCenters(self, clusters):
+        for c in self.clusters:
+            self.centers[c] = np.average(self.clusters[c], axis =0)
+
+
+        # count = np.zeros(self.k)
+        #
+        # for i in range(self.k):
+        #     z = 0
+        #     for c in clusters:
+        #         if c == i:
+        #             z +=1
+        #     count[i] == z
+        #
+        # print("Count", count)
+
+
+    def squareSums(self, data, centers):
+        print("blah")
 
 class fuzzyC:
     def __init__(self, k):
