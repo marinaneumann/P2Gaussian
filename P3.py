@@ -53,15 +53,14 @@ def kMeansAlg():
         ss = kCluster.squareSums()
         squaredSums =np.append(squaredSums, ss)
     sumMin = np.argmin(squaredSums)
+    print("Solution with lowest sum was at itertion:", sumMin)
     mSS = squaredSums[sumMin]
+    print("Lowest sum was :", mSS)
 
-
-
-    colors = ['green', 'purple', 'blue', 'orange', 'yellow', 'black', 'brown', 'pink']
+    colors = ['green', 'purple', 'blue', 'orange', 'brown', 'pink', 'black', 'violet', 'teal','tomato','maroon', 'olive', 'gold']
 
     for c in kCluster.centers:
-        plt.scatter(c[0], c[1],
-                    marker="*", color="red", s=10, linewidths=2)
+        plt.scatter(c[0], c[1], marker='*', color="red", s=200)
 
 
     for d in range(kCluster.k):
@@ -70,9 +69,10 @@ def kMeansAlg():
         kCluster.clusters[d] = np.array_split(kCluster.clusters[d],num )
 
         for k in kCluster.clusters[d]:
-            plt.scatter(k[0],k[1], marker="o", color=color, s=10, linewidths=2)
-
+            plt.scatter(k[0],k[1], marker="o", color=color, s=2)
+    plt.title('K-Means Algorithm' ,size=16)
     plt.show()
+    #plt.savefig('Kmeans2.png', dpi=150)
 
 def fuzzyCMeansAlg():
     print("hi")
@@ -86,7 +86,7 @@ class kMeans:
 
 
     def euclideanDistance(self,X, Y):
-        return (sum((X - Y)**2))**0.5
+        return (sum((Y-X)**2))**0.5
 
     def assign(self, data):
         for i in range(self.k): #Arranges for K different clusters
