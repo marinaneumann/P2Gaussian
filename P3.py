@@ -41,7 +41,7 @@ def kMeansAlg():
     kCluster.centers = data[i] #Creates centers at those random data points
     n = int(input("How many iterations?: ")) #Asks user for how many iterations
     squaredSums = []
-    #z = 0
+
     for z in range(n):
         kCluster.clusters = {}
         kCluster.assign(data)
@@ -55,15 +55,12 @@ def kMeansAlg():
 
         # colors = ['green', 'purple', 'blue', 'orange', 'brown', 'pink', 'black', 'violet', 'teal', 'tomato', 'maroon',
         #           'olive', 'gold']
-        #
         # for c in kCluster.centers:
         #     plt.scatter(c[0], c[1], marker='*', color="red", s=200)
-        #
         # for d in range(kCluster.k):
         #     color = colors[d]
         #     num = len(kCluster.clusters[d]) / 2
         #     kCluster.clusters[d] = np.array_split(kCluster.clusters[d], num)
-        #
         #     for k in kCluster.clusters[d]:
         #         plt.scatter(k[0], k[1], marker="o", color=color, s=2)
         # plt.title('K-Means Algorithm', size=16)
@@ -78,7 +75,6 @@ def kMeansAlg():
 
     for c in kCluster.centers:
         plt.scatter(c[0], c[1], marker='*', color="red", s=200)
-
 
     for d in range(kCluster.k):
         color = colors[d]
@@ -99,7 +95,7 @@ class kMeans:
 
 
     def euclideanDistance(self,X, Y):
-        return (sum((Y-X)**2))**0.5
+        return (sum((X-Y)**2))**0.5
 
     def assign(self, data):
         for i in range(self.k): #Arranges for K different clusters
@@ -112,7 +108,7 @@ class kMeans:
 
     def calcCenters(self):
         for c in self.clusters:
-            self.centers[c] = np.average(self.clusters[c], axis =0)
+            self.centers[c] = np.mean(self.clusters[c], axis =0)
 
     def squareSums(self ):
         sums = 0
@@ -128,8 +124,13 @@ def fuzzyCMeansAlg():
     print("hi")
     k = int(input("What is the value of K?"))  # Takes user input of k
     fMeans = fuzzyC(k, dataNum, fNum, data)  # Creates kCluster object
-
-
+    fMeans.membership = np.random.rand(dataNum,k)
+    n = int(input("How many iterations?: "))
+    for i in range(n):
+        print("WAZZZZZZUP?")
+        fMeans.computeCenter()
+        #fMeans.updateMembership()
+        #fMeans.sumSquares()
 class fuzzyC:
     def __init__(self, k, dataNum, fNum, data):
         self.k = k
@@ -137,12 +138,29 @@ class fuzzyC:
         self.fNum = fNum
         self.data = data
         self.m = 2  #Default set value,for fuzzier parameter
+        self.centers ={}
 
 
     def computeCenter(self):
         print("WAZZUP")
 
-    def  computeMembership(self):
+
+        for z in range(self.k):
+            self.centers[z] = []
+            denominator, numerator = 0,0
+
+            for d in range(self.dNum):
+                denominator += (self.membership[d][z]**self.m)
+                print(denominator)
+            for d in range(self.dNum):
+                numerator += (denominator  * d)
+                print(numerator)
+            num = numerator/denominator
+            print("c at k:", num)
+            self.centers[z] = np.append(self.centers[z],numerator/denominator)
+            print("Centers?:", self.centers)
+
+    def  updateMembership(self):
         print("Blah Blah Blah ")
 
     def sumSquares(self):
