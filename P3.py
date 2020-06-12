@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
 
 def main():
     print("Programming Assignment #3")
@@ -50,22 +51,28 @@ def kMeansAlg():
             break
 
         ss = kCluster.squareSums()
-
         squaredSums =np.append(squaredSums, ss)
-        print("This is squaredSums:", squaredSums)
-
     sumMin = np.argmin(squaredSums)
-    print("This is the index of sumMin:", sumMin)
     mSS = squaredSums[sumMin]
-    print("The lowest sum of squares error over ", n ," runs is:", mSS)
 
 
-    # colors = ['green','red', 'purple']
-    # for i in range(kCluster.k):
-    #     plt.scatter(data[i,0], data[i,1], s= 7, color = colors[int(i)])
-    # plt.scatter(kCluster.centers[:,0], kCluster.centers[:,1], marker="*", c='g', s=20)
-    # plt.show()
 
+    colors = ['green', 'purple', 'blue', 'orange', 'yellow', 'black', 'brown', 'pink']
+
+    for c in kCluster.centers:
+        plt.scatter(c[0], c[1],
+                    marker="*", color="red", s=10, linewidths=2)
+
+
+    for d in range(kCluster.k):
+        color = colors[d]
+        num = len(kCluster.clusters[d])/2
+        kCluster.clusters[d] = np.array_split(kCluster.clusters[d],num )
+
+        for k in kCluster.clusters[d]:
+            plt.scatter(k[0],k[1], marker="o", color=color, s=10, linewidths=2)
+
+    plt.show()
 
 def fuzzyCMeansAlg():
     print("hi")
@@ -79,38 +86,28 @@ class kMeans:
 
 
     def euclideanDistance(self,X, Y):
-
         return (sum((X - Y)**2))**0.5
 
     def assign(self, data):
-
         for i in range(self.k): #Arranges for K different clusters
             self.clusters[i] = []
-
         for f in data:
             distances = [self.euclideanDistance(f,self.centers[c]) for c in range(self.k)] #calculates distances in data
             cluster = distances.index(min(distances))
-            self.clusters[cluster] =np.append(self.clusters[cluster], f)
-
+            self.clusters[cluster] =np.append(self.clusters[cluster],f)
         self.prev_centers = dict(self.centers)
-
 
     def calcCenters(self):
         for c in self.clusters:
             self.centers[c] = np.average(self.clusters[c], axis =0)
 
     def squareSums(self ):
-        print("blah")
-
         sums = 0
         for i in range(self.k):
             cSUM = 0
-            #mean = np.mean(self.clusters[i])
             for z in self.clusters[i]:
                 cSUM += self.euclideanDistance(z, self.centers[i])
             sums += cSUM
-        #     print('This is sums:', sums)
-        # sumMin = np.argmin(sums)
         return sums
 
 class fuzzyC:
