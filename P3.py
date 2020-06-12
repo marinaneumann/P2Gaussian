@@ -31,7 +31,7 @@ def dataLoad():
     # plt.show()
 
 def kMeansAlg():
-    #clusterVars = []
+
     k = int(input("What is the value of K?")) #Takes user input of k
     kCluster = kMeans(k, dataNum, fNum,data) #Creates kCluster object
 
@@ -52,6 +52,23 @@ def kMeansAlg():
 
         ss = kCluster.squareSums()
         squaredSums =np.append(squaredSums, ss)
+
+        # colors = ['green', 'purple', 'blue', 'orange', 'brown', 'pink', 'black', 'violet', 'teal', 'tomato', 'maroon',
+        #           'olive', 'gold']
+        #
+        # for c in kCluster.centers:
+        #     plt.scatter(c[0], c[1], marker='*', color="red", s=200)
+        #
+        # for d in range(kCluster.k):
+        #     color = colors[d]
+        #     num = len(kCluster.clusters[d]) / 2
+        #     kCluster.clusters[d] = np.array_split(kCluster.clusters[d], num)
+        #
+        #     for k in kCluster.clusters[d]:
+        #         plt.scatter(k[0], k[1], marker="o", color=color, s=2)
+        # plt.title('K-Means Algorithm', size=16)
+        # plt.show()
+
     sumMin = np.argmin(squaredSums)
     print("Solution with lowest sum was at itertion:", sumMin)
     mSS = squaredSums[sumMin]
@@ -72,10 +89,6 @@ def kMeansAlg():
             plt.scatter(k[0],k[1], marker="o", color=color, s=2)
     plt.title('K-Means Algorithm' ,size=16)
     plt.show()
-    #plt.savefig('Kmeans2.png', dpi=150)
-
-def fuzzyCMeansAlg():
-    print("hi")
 
 class kMeans:
     def __init__(self,k, dataNum, fNum, data):
@@ -110,7 +123,29 @@ class kMeans:
             sums += cSUM
         return sums
 
+
+def fuzzyCMeansAlg():
+    print("hi")
+    k = int(input("What is the value of K?"))  # Takes user input of k
+    fMeans = fuzzyC(k, dataNum, fNum, data)  # Creates kCluster object
+
+
 class fuzzyC:
-    def __init__(self, k):
+    def __init__(self, k, dataNum, fNum, data):
         self.k = k
+        self.dNum = dataNum
+        self.fNum = fNum
+        self.data = data
+        self.m = 2  #Default set value,for fuzzier parameter
+
+
+    def computeCenter(self):
+        print("WAZZUP")
+
+    def  computeMembership(self):
+        print("Blah Blah Blah ")
+
+    def sumSquares(self):
+        print("BLOOOPPPP")
+
 main()
