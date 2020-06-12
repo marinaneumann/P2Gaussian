@@ -39,7 +39,7 @@ def kMeansAlg():
     i = rng.permutation(data.shape[0])[:k] # Creates random indexes to assign centers
     kCluster.centers = data[i] #Creates centers at those random data points
     n = int(input("How many iterations?: ")) #Asks user for how many iterations
-    squaredSums = np.zeros(n)
+    squaredSums = []
     #z = 0
     for z in range(n):
         kCluster.clusters = {}
@@ -49,17 +49,21 @@ def kMeansAlg():
         if np.all(kCluster.centers == kCluster.prev_centers):
             break
 
-        #calculated squared sums and push into array
-        #ss = kCluster.squareSums(data, centers)
-        # centers = new_centers
+        ss = kCluster.squareSums()
 
+        squaredSums =np.append(squaredSums, ss)
+        print("This is squaredSums:", squaredSums)
 
+    sumMin = np.argmin(squaredSums)
+    print("This is the index of sumMin:", sumMin)
+    mSS = squaredSums[sumMin]
+    print("The lowest sum of squares error over ", n ," runs is:", mSS)
 
 
     # colors = ['green','red', 'purple']
-    # for i in range(dataNum):
+    # for i in range(kCluster.k):
     #     plt.scatter(data[i,0], data[i,1], s= 7, color = colors[int(i)])
-    # plt.scatter(updatedClusters[:,0], updatedClusters[:,1], marker="*", c='g', s=20)
+    # plt.scatter(kCluster.centers[:,0], kCluster.centers[:,1], marker="*", c='g', s=20)
     # plt.show()
 
 
@@ -74,8 +78,9 @@ class kMeans:
         self.data = data
 
 
-    def euclideanDistance(self,center, data):
-        return (sum((center - data)**2))**0.5
+    def euclideanDistance(self,X, Y):
+
+        return (sum((X - Y)**2))**0.5
 
     def assign(self, data):
 
@@ -94,11 +99,19 @@ class kMeans:
         for c in self.clusters:
             self.centers[c] = np.average(self.clusters[c], axis =0)
 
-
-
-
-    def squareSums(self, data, centers):
+    def squareSums(self ):
         print("blah")
+
+        sums = 0
+        for i in range(self.k):
+            cSUM = 0
+            #mean = np.mean(self.clusters[i])
+            for z in self.clusters[i]:
+                cSUM += self.euclideanDistance(z, self.centers[i])
+            sums += cSUM
+        #     print('This is sums:', sums)
+        # sumMin = np.argmin(sums)
+        return sums
 
 class fuzzyC:
     def __init__(self, k):
