@@ -58,7 +58,7 @@ def kMeansAlg():
 
         # colors = ['green', 'purple', 'blue', 'orange', 'brown', 'pink', 'black', 'violet', 'teal', 'tomato', 'maroon',
         #           'olive', 'gold']
-        # for c in kCluster.centers:
+        # for c in kCluster.centers:squaredSums = []
         #     plt.scatter(c[0], c[1], marker='*', color="red", s=200)
         # for d in range(kCluster.k):
         #     color = colors[d]
@@ -129,11 +129,18 @@ def fuzzyCMeansAlg():
     fMeans = fuzzyC(k, dataNum, fNum, data)  # Creates kCluster object
     fMeans.membership = np.random.rand(dataNum,k)
     n = int(input("How many iterations?: "))
+    squaredSums = []
     for i in range(n):
         print("WAZZZZZZUP?")
         fMeans.computeCenter()
-        #fMeans.updateMembership()
-        #fMeans.sumSquares()
+        fMeans.updateMembership()
+        # MS = fMeans.sumSquares()
+        #squaredSums = np.append(squaredSums, MS)
+
+    #SM = np.argmin(squaredSums)
+     # print("Solution with lowest sum was at itertion:", sM)
+    # mSS = squaredSums[sumMin]
+    # print("Lowest sum was :", mSS)
 
 class fuzzyC:
     def __init__(self, k, dataNum, fNum, data):
@@ -155,8 +162,27 @@ class fuzzyC:
 
     def  updateMembership(self):
         print("Blah Blah Blah ")
+        print("These are the memberships currently before update:", self.membership)
+        new_membership = np.random.rand(self.dNum,self.k)
+        d = float(2 / (self.m - 1))
+        for i in range(self.dNum):
+            distances = [euclideanDistance(self.data[i],self.centers[j])for j in range(self.k)]
+            print("These are the distances for each data and each center?", distances)
+            for j in range(self.k):
+                den = sum([pow(float(distances[j] / distances[c]), d) for c in range(self.k)])
+                new_membership[i][j] = float(1 / den)
+        print("These are the new updated memberships:", new_membership)
+        self.membership = new_membership
+
 
     def sumSquares(self):
         print("BLOOOPPPP?")
+        # sums = 0
+        # for i in range(self.k):
+        #     cSUM = 0
+        #     for z in self.clusters[i]:
+        #         cSUM += euclideanDistance(z, self.centers[i])
+        #     sums += cSUM
+        # return sums
 
 main()
