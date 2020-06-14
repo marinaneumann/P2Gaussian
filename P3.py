@@ -131,6 +131,7 @@ def fuzzyCMeansAlg():
         fMeans.computeCenter()
         #fMeans.updateMembership()
         #fMeans.sumSquares()
+
 class fuzzyC:
     def __init__(self, k, dataNum, fNum, data):
         self.k = k
@@ -144,26 +145,43 @@ class fuzzyC:
     def computeCenter(self):
         print("WAZZUP")
 
+        #V0
+        wkM = np.power(self.membership, self.m)
+        # print(w_k_sqaured.shape)
+        # print(np.matmul(data.values.T, w_k_sqaured))
+        self.centers = np.transpose(np.matmul(self.data.T, wkM) / np.sum(wkM, axis=0))
+        print("These are the centers?", self.centers)
+        #V1
+        # for z in range(self.k):
+        #     self.centers[z] = []
+        #     for d in range(self.dNum):
+        #         sum = np.dot((self.membership[d][z]).T, self.data[d]) / np.sum((self.membership[d][z])**self.m, axis =1)
+        #     self.centers[z] = np.append(self.center[z], sum)
+        #     print("Centers are:", self.centers[z])
 
-        for z in range(self.k):
-            self.centers[z] = []
-            denominator, numerator = 0,0
-
-            for d in range(self.dNum):
-                denominator += (self.membership[d][z]**self.m)
-                print(denominator)
-            for d in range(self.dNum):
-                numerator += (denominator  * d)
-                print(numerator)
-            num = numerator/denominator
-            print("c at k:", num)
-            self.centers[z] = np.append(self.centers[z],numerator/denominator)
-            print("Centers?:", self.centers)
+        #V2
+        # for z in range(self.k):
+        #     self.centers[z] = []
+        #denominator, numerator = 0, 0
+        #
+        #     for d in range(self.dNum):
+        #         denominator += (self.membership[d][z]**self.m)
+        #         print("This is d", d)
+        #         print(self.membership[d][z])
+        #         print(self.membership[d][z] ** self.m)
+        #         print(denominator)
+        #         print("Data at d:", self.data[d])
+        #         numerator += (denominator  * self.data[d])
+        #         print(numerator)
+        #     num = numerator/denominator
+        #     print("c at k:", num)
+        #     self.centers[z] = np.append(self.centers[z],numerator/denominator)
+        #     print("Centers?:", self.centers)
 
     def  updateMembership(self):
         print("Blah Blah Blah ")
 
     def sumSquares(self):
-        print("BLOOOPPPP")
+        print("BLOOOPPPP?")
 
 main()
