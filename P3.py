@@ -150,6 +150,21 @@ def fuzzyCMeansAlg():
     mSS = squaredSums[SM]
     print("Lowest sum was :", mSS)
 
+    colors = ['green', 'purple', 'blue', 'orange', 'brown', 'pink', 'black', 'violet', 'teal', 'tomato', 'maroon',
+              'olive', 'gold']
+
+    for c in fMeans.centers:
+        plt.scatter(c[0], c[1], marker='*', color="red", s=200)
+
+    for d in range(fMeans.k):
+        color = colors[d]
+        num = len(fMeans.clusters[d]) / 2
+        fMeans.clusters[d] = np.array_split(fMeans.clusters[d], num)
+
+        for k in fMeans.clusters[d]:
+            plt.scatter(k[0], k[1], marker="o", color=color, s=2)
+    plt.title('Fuzzy C-Means Algorithm', size=16)
+    plt.show()
 
 class fuzzyC:
     def __init__(self, k, dataNum, fNum, data):
@@ -171,7 +186,6 @@ class fuzzyC:
 
     def  updateMembership(self):
         print("Blah Blah Blah ")
-        #self.new_membership = np.random.rand(self.dNum,self.k)
         self.old_membership = self.membership
         d = float(2 / (self.m - 1))
         for i in range(self.dNum):
@@ -195,7 +209,7 @@ class fuzzyC:
             self.clusters[cluster] = np.append(self.clusters[cluster], f)
         self.prev_centers = dict(self.centers)
 
-        # print("These are the clusters:", self.clusters)
+
 
     def sumSquares(self):
         print("BLOOOPPPP?")
