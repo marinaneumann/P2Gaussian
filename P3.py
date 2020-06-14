@@ -174,6 +174,8 @@ class fuzzyC:
         print("These are the new updated memberships:", new_membership)
         self.membership = new_membership
 
+    def clustering(self):
+
 
     def sumSquares(self):
         print("BLOOOPPPP?")
