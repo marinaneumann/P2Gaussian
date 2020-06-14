@@ -30,6 +30,9 @@ def dataLoad():
     # plt.scatter(dX, dY, c="blue")
     # plt.show()
 
+def euclideanDistance(X, Y):
+        return (sum((X-Y)**2))**0.5
+
 def kMeansAlg():
 
     k = int(input("What is the value of K?")) #Takes user input of k
@@ -94,14 +97,14 @@ class kMeans:
         self.data = data
 
 
-    def euclideanDistance(self,X, Y):
-        return (sum((X-Y)**2))**0.5
+    # def euclideanDistance(self,X, Y):
+    #     return (sum((X-Y)**2))**0.5
 
     def assign(self, data):
         for i in range(self.k): #Arranges for K different clusters
             self.clusters[i] = []
         for f in data:
-            distances = [self.euclideanDistance(f,self.centers[c]) for c in range(self.k)] #calculates distances in data
+            distances = [euclideanDistance(f,self.centers[c]) for c in range(self.k)] #calculates distances in data
             cluster = distances.index(min(distances))
             self.clusters[cluster] =np.append(self.clusters[cluster],f)
         self.prev_centers = dict(self.centers)
@@ -115,7 +118,7 @@ class kMeans:
         for i in range(self.k):
             cSUM = 0
             for z in self.clusters[i]:
-                cSUM += self.euclideanDistance(z, self.centers[i])
+                cSUM += euclideanDistance(z, self.centers[i])
             sums += cSUM
         return sums
 
@@ -144,39 +147,11 @@ class fuzzyC:
 
     def computeCenter(self):
         print("WAZZUP")
-
-        #V0
         wkM = np.power(self.membership, self.m)
-        # print(w_k_sqaured.shape)
-        # print(np.matmul(data.values.T, w_k_sqaured))
+
         self.centers = np.transpose(np.matmul(self.data.T, wkM) / np.sum(wkM, axis=0))
         print("These are the centers?", self.centers)
-        #V1
-        # for z in range(self.k):
-        #     self.centers[z] = []
-        #     for d in range(self.dNum):
-        #         sum = np.dot((self.membership[d][z]).T, self.data[d]) / np.sum((self.membership[d][z])**self.m, axis =1)
-        #     self.centers[z] = np.append(self.center[z], sum)
-        #     print("Centers are:", self.centers[z])
 
-        #V2
-        # for z in range(self.k):
-        #     self.centers[z] = []
-        #denominator, numerator = 0, 0
-        #
-        #     for d in range(self.dNum):
-        #         denominator += (self.membership[d][z]**self.m)
-        #         print("This is d", d)
-        #         print(self.membership[d][z])
-        #         print(self.membership[d][z] ** self.m)
-        #         print(denominator)
-        #         print("Data at d:", self.data[d])
-        #         numerator += (denominator  * self.data[d])
-        #         print(numerator)
-        #     num = numerator/denominator
-        #     print("c at k:", num)
-        #     self.centers[z] = np.append(self.centers[z],numerator/denominator)
-        #     print("Centers?:", self.centers)
 
     def  updateMembership(self):
         print("Blah Blah Blah ")
