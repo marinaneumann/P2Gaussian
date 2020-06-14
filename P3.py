@@ -132,15 +132,24 @@ def fuzzyCMeansAlg():
     squaredSums = []
     for i in range(n):
         print("WAZZZZZZUP?")
+        fMeans.clusters = {}
         fMeans.computeCenter()
         fMeans.updateMembership()
-        # MS = fMeans.sumSquares()
-        #squaredSums = np.append(squaredSums, MS)
+        fMeans.clustering()
 
-    #SM = np.argmin(squaredSums)
-     # print("Solution with lowest sum was at itertion:", sM)
-    # mSS = squaredSums[sumMin]
-    # print("Lowest sum was :", mSS)
+        if np.sum(~(fMeans.centers == fMeans.old_centers)) < 1:
+            print("Centers Optimized")
+            break
+
+        MS = fMeans.sumSquares()
+        squaredSums = np.append(squaredSums, MS)
+
+    print(squaredSums)
+    SM = np.argmin(squaredSums)
+    print("Solution with lowest sum was at itertion:", SM)
+    mSS = squaredSums[SM]
+    print("Lowest sum was :", mSS)
+
 
 class fuzzyC:
     def __init__(self, k, dataNum, fNum, data):
@@ -154,37 +163,49 @@ class fuzzyC:
 
     def computeCenter(self):
         print("WAZZUP")
+        self.old_centers = self.centers
         wkM = np.power(self.membership, self.m)
-
         self.centers = np.transpose(np.matmul(self.data.T, wkM) / np.sum(wkM, axis=0))
-        print("These are the centers?", self.centers)
+
 
 
     def  updateMembership(self):
         print("Blah Blah Blah ")
-        print("These are the memberships currently before update:", self.membership)
-        new_membership = np.random.rand(self.dNum,self.k)
+        #self.new_membership = np.random.rand(self.dNum,self.k)
+        self.old_membership = self.membership
         d = float(2 / (self.m - 1))
         for i in range(self.dNum):
             distances = [euclideanDistance(self.data[i],self.centers[j])for j in range(self.k)]
-            print("These are the distances for each data and each center?", distances)
             for j in range(self.k):
                 den = sum([pow(float(distances[j] / distances[c]), d) for c in range(self.k)])
-                new_membership[i][j] = float(1 / den)
-        print("These are the new updated memberships:", new_membership)
-        self.membership = new_membership
+                self.membership[i][j] = float(1 / den)
+
 
     def clustering(self):
+        for i in range(self.k):
+            self.clusters[i] = []
 
+        # for i in range(self.dNum):
+        #     max_val, idx = max((val, idx) for (idx, val) in enumerate(self.membership[i]))
+        #     self.clusters = np.append(self.clusters, idx)
+
+        for f in self.data:
+            distances = [euclideanDistance(f, self.centers[c]) for c in range(self.k)]  # calculates distances in data
+            cluster = distances.index(min(distances))
+            self.clusters[cluster] = np.append(self.clusters[cluster], f)
+        self.prev_centers = dict(self.centers)
+
+        # print("These are the clusters:", self.clusters)
 
     def sumSquares(self):
         print("BLOOOPPPP?")
-        # sums = 0
-        # for i in range(self.k):
-        #     cSUM = 0
-        #     for z in self.clusters[i]:
-        #         cSUM += euclideanDistance(z, self.centers[i])
-        #     sums += cSUM
-        # return sums
+        sums = 0
+        for i in range(self.k):
+            cSUM = 0
+            for z in self.clusters[i]:
+                cSUM += euclideanDistance(z, self.centers[i])
+            sums += cSUM
+        print("These are the sums?:", sums)
+        return sums
 
 main()
